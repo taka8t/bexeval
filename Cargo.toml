@@ -1,0 +1,15 @@
+[package]
+name = "bexeval"
+version = "0.1.0"
+edition = "2021"
+authors = ["taka8 <taka87874k4@gmail.com>"]
+description = "bexeval is a Rust crate for evaluating string formulas restricted to values as integers only."
+documentation = "https://docs.rs/bexeval"
+repository = "https://github.com/taka8t/bexeval"
+keywords = ["expression", "math", "evaluator", "parsing"]
+categories = ["parsing", "mathematics"]
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+num-traits = "0.2.19"
