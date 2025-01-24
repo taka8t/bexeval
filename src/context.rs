@@ -33,7 +33,7 @@ impl<T: Integer> Context<T> {
     }
 
     pub fn eval(&self, src: &str) -> Result<T, ParserError> {
-        self.parser.eval_context(src, &self.var_info)
+        self.parser.eval_inner(src, &self.var_info)
     }
 
     pub fn clear(&mut self) {

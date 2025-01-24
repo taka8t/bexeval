@@ -1,5 +1,4 @@
 use bexeval::*;
-use std::collections::HashMap;
 
 macro_rules! op_test {
     ($t:ty, $name: ident) => {
@@ -47,10 +46,8 @@ macro_rules! op_test {
                 ((1 as $t + 2 * 3 % 4).wrapping_shl(5 as u32) == 96) as $t ^ 6 & 7 | !32
             );
 
-            let mut ctx = HashMap::new();
-            ctx.insert("x".to_string(), parser.eval("1 << 5").unwrap());
             assert_eq!(
-                parser.eval_context("-32 + x", &ctx).unwrap(),
+                parser.eval_context("-32 + x", &[("x", parser.eval("1 << 5").unwrap())]).unwrap(),
                 0
             );
         }

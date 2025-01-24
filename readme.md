@@ -30,12 +30,12 @@ use std::collections::HashMap;
 let parser = Parser::<i32>::new();
 assert_eq!(parser.eval("1 + 2 * max(3, 4) - (8 ^ 5)").unwrap(), 1 + 2 * 3.max(4) - (8 ^ 5));
 
-let mut ctx = HashMap::<String, i32>::new();
-ctx.insert("x".to_string(), 5);
-assert_eq!(parser.eval_context("1 + x", &ctx).unwrap(), 1 + 5);
+assert_eq!(parser.eval_context("1 + x", &[("x", 5)]).unwrap(), 1 + 5);
 
 assert_eq!(parser.eval(&format!("1 + {}", 5)).unwrap(), 1 + 5);
 ```
+
+The context argument stores information about the variable in array of tuples(&str, T).
 
 Wrapping operations are used for operations that may overflow. (`wrapping_add`, `wrapping_mul`...)
 

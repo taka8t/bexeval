@@ -49,13 +49,13 @@ impl<T: Integer> Parser<T> {
     }
 
     /// Used when the expression string contains variables
-    /// The ctx argument stores information about the variable in a HashMap
-    pub fn eval_context(&self, src: &str, ctx: &HashMap<String, T>) -> Result<T, ParserError> {
-        self.eval_inner(src, ctx)
+    /// The ctx argument stores information about the variable in array of tuples(&str, T).
+    pub fn eval_context(&self, src: &str, ctx: &[(&str, T)]) -> Result<T, ParserError> {
+        self.eval_inner(src, &HashMap::from_iter(ctx.iter().map(|(s, i)| (s.to_string(), *i))))
     }
 
     /// Internal method to convert the expression string to integer values
-    fn eval_inner(&self, src: &str, ctx: &HashMap<String, T>) -> Result<T, ParserError> {
+    pub(crate) fn eval_inner(&self, src: &str, ctx: &HashMap<String, T>) -> Result<T, ParserError> {
         let mut stack = Vec::new();
         for token in self.to_rpn(src)?.into_iter() {
             match token {
@@ -136,7 +136,7 @@ impl<T: Integer> Parser<T> {
                 return Err(ParserError::new("The syntax on the left side is incorrect"));
             };
             
-            let val = self.eval_context(expr, ctx)?;
+            let val = self.eval_inner(expr, ctx)?;
 
             Ok((var, val))
         }
@@ -527,9 +527,7 @@ mod tests {
 
     #[test]
     fn parse_expr_with_context() {
-        let mut ctx = HashMap::new();
-        ctx.insert("x".to_string(), 5);
-        ctx.insert("y".to_string(), 2);
+        let ctx = [("x", 5), ("y", 2)];
         assert_eq!(
             Parser::<i32>::new().eval_context("1 + y * 3 - (8 ^ x) | 15 / 2 % 9 & 25", &ctx).unwrap(), 
             1 + 2 * 3 - (8 ^ 5) | 15 / 2 % 9 & 25
