@@ -21,7 +21,6 @@ pub trait Integer :
     + std::ops::Div<Self, Output = Self>
     + std::ops::Rem<Self, Output = Self>
     + std::ops::Not<Output = Self>
-    + AsPrimitive<u32>
     + std::convert::From<bool>
 {
     fn wrapping_pow(self, exp: u32) -> Self;
@@ -29,6 +28,19 @@ pub trait Integer :
     fn count_ones(self) -> Self;
 
     fn count_zeros(self) -> Self;
+
+    fn leading_zeros(self) -> Self;
+
+    fn trailing_zeros(self) -> Self;
+
+    fn abs(self) -> Self;
+
+    fn abs_diff(self, other: Self) -> Self;
+
+    fn rotate_left(self, n: u32) -> Self;
+
+    fn rotate_right(self, n: u32) -> Self;
+    // rotation_r rotation_l abs abs_diff
 }
 
 macro_rules! impl_int {
@@ -44,6 +56,35 @@ macro_rules! impl_int {
 
             fn count_zeros(self) -> $t {
                 self.count_zeros().as_()
+            }
+
+            fn leading_zeros(self) -> $t {
+                self.leading_zeros().as_()
+            }
+
+            fn trailing_zeros(self) -> $t {
+                self.trailing_zeros().as_()
+            }
+
+            fn abs(self) -> $t {
+                if self > <$t>::zero() {self} else {self.wrapping_neg()}
+            }
+
+            fn abs_diff(self, other: $t) -> $t {
+                if self > other {
+                    self.wrapping_sub(other)
+                }
+                else {
+                    other.wrapping_sub(self)
+                }
+            }
+            
+            fn rotate_left(self, n: u32) -> Self {
+                self.rotate_left(n)
+            }
+
+            fn rotate_right(self, n: u32) -> Self {
+                self.rotate_right(n)
             }
         }
     }

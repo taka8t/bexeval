@@ -1,6 +1,6 @@
 [package]
 name = "bexeval"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["taka8 <taka87874k4@gmail.com>"]
 description = "bexeval is a Rust crate for evaluating string formulas restricted to values as integers only."

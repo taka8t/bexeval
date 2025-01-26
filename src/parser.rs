@@ -388,14 +388,22 @@ pub enum Function {
     Pow,
     Max,
     Min,
+    Abs,
+    AbsDiff,
     CountOnes,
-    CountZeros
+    CountZeros,
+    LeadingZeros,
+    TrailingZeros,
+    RotateLeft,
+    RotateRight
 }
 
 impl Function {
     fn n_arg(&self) -> u8 {
         match self {
-            Self::Pow | Self::Max | Self::Min => {2},
+            Self::Pow | Self::Max | Self::Min
+            | Self::AbsDiff 
+            | Self::RotateLeft | Self::RotateRight => {2},
             _ => {1}
         }
     }
@@ -404,6 +412,9 @@ impl Function {
         match self {
             Self::CountOnes => x1.count_ones(),
             Self::CountZeros => x1.count_zeros(),
+            Self::LeadingZeros => x1.leading_zeros(),
+            Self::TrailingZeros => x1.trailing_zeros(),
+            Self::Abs => x1.abs(),
             _ => unreachable!("The number of arguments should be 1")
         }
     }
@@ -413,6 +424,9 @@ impl Function {
             Self::Pow => x1.wrapping_pow(x2.as_()),
             Self::Max => x1.max(x2),
             Self::Min => x1.min(x2),
+            Self::AbsDiff => x1.abs_diff(x2),
+            Self::RotateLeft => x1.rotate_left(x2.as_()),
+            Self::RotateRight => x1.rotate_right(x2.as_()),
             _ => unreachable!("The number of arguments should be 2")
         }
     }
@@ -425,8 +439,14 @@ impl std::str::FromStr for Function {
             "pow" => Ok(Self::Pow),
             "max" => Ok(Self::Max),
             "min" => Ok(Self::Min),
+            "abs" => Ok(Self::Abs),
+            "abs_diff" => Ok(Self::AbsDiff),
             "count_ones" => Ok(Self::CountOnes),
             "count_zeros" => Ok(Self::CountZeros),
+            "leading_zeros" => Ok(Self::LeadingZeros),
+            "trailing_zeros" => Ok(Self::TrailingZeros),
+            "rotate_left" => Ok(Self::RotateLeft),
+            "rotate_right" => Ok(Self::RotateRight),
             _ => Err(ParserError::new(format!("Cannot use function: {}", s).as_str()))
         }
     }

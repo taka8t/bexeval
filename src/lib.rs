@@ -1,5 +1,5 @@
 //! # bexeval
-//! bexeval is a Rust crate for evaluating string formulas restricted to values as integers only.
+//! Bexeval is a Rust crate for evaluating mathematical expressions with integer numeric types written as strings.
 //! 
 //! ## Features
 //! 
@@ -7,7 +7,7 @@
 //!     - Basic arithmetic operations: `+`, `-`, `*`, `/`, `%`, `&`, `|`, `^`, `<<`, `>>`, `!`(operator not)
 //!     - Comparison operators (Return 1 if true, 0 if false): `==`, `!=`, `<`, `<=`, `>`, `>=`
 //!     - Parentheses for expression grouping
-//!     - Common mathematical functions (possibility of adding more functions in the future): `pow`, `count_ones`, `count_zeros`
+//!     - Common mathematical functions (possibility of adding more functions in the future): `pow`, `count_ones`, `abs`...
 //! - Can select primitive integer type as the numeric value type: `u8`, `u16`, `u32`, `u64`, `usize`, `i8`, `i16`, `i32`, `i64`, `isize`
 //! - Support for variables.
 //! - Minimal dependencies (only `num-traits`).
@@ -25,7 +25,6 @@
 //! 
 //! ```rust
 //! use bexeval::*;
-//! use std::collections::HashMap;
 //! 
 //! let parser = Parser::<i32>::new();
 //! assert_eq!(parser.eval("1 + 2 * max(3, 4) - (8 ^ 5)").unwrap(), 1 + 2 * 3.max(4) - (8 ^ 5));
@@ -59,6 +58,16 @@
 //! assert_eq!(ctx.eval("y + x * (pow(2, 8) - 1)").unwrap(), 5);
 //! ```
 //! 
+//! ### Available function
+//!  - `pow`
+//!  - `abs`
+//!  - `abs_diff` (Available even with rustc versions below 1.60)
+//!  - `count_ones`
+//!  - `count_zeros`
+//!  - `leading_zeros`
+//!  - `trailing_zeros`
+//!  - `rotate_left`
+//!  - `rotate_right`
 //! ## API Documentation
 //! 
 //! Detailed API documentation can be found [here](https://docs.rs/bexeval).

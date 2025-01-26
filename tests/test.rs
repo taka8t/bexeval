@@ -39,6 +39,12 @@ macro_rules! op_test {
                 assert_eq!(parser.eval(&format!("pow({}, {})", x, y)).unwrap(), x.wrapping_pow(y as u32));
                 assert_eq!(parser.eval(&format!("count_ones({})", x)).unwrap(), x.count_ones() as $t);
                 assert_eq!(parser.eval(&format!("count_zeros({})", x)).unwrap(), x.count_zeros() as $t);
+                assert_eq!(parser.eval(&format!("leading_zeros({})", x)).unwrap(), x.leading_zeros() as $t);
+                assert_eq!(parser.eval(&format!("trailing_zeros({})", x)).unwrap(), x.trailing_zeros() as $t);
+                assert_eq!(parser.eval(&format!("abs({})", x)).unwrap(), if x > 0 {x} else {x.wrapping_neg()});
+                assert_eq!(parser.eval(&format!("abs_diff({}, {})", x, y)).unwrap(), x.abs_diff(y) as $t);
+                assert_eq!(parser.eval(&format!("rotate_left({}, {})", x, y)).unwrap(), x.rotate_left(y as u32) as $t);
+                assert_eq!(parser.eval(&format!("rotate_right({}, {})", x, y)).unwrap(), x.rotate_right(y as u32) as $t);
             }
 
             assert_eq!(
