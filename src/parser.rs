@@ -124,6 +124,8 @@ impl<T: Integer> Parser<T> {
     /// "x = 2 + 6"
     /// "y = x * 2"
     /// ParserError if `expr` contains a variable with no information
+    /// If `stmt` is an expression, this method returns a tuple of an empty string and values,
+    /// but it is more efficient to use the `eval_context` method.
     pub(crate) fn parse_statement(&self, stmt: &str, ctx: &HashMap<String, T>) -> Result<(String, T), ParserError> {
         let mut split = stmt.splitn(2, '=');
         if let (Some(var_str), Some(expr)) = (split.next(), split.next()) {
@@ -141,7 +143,8 @@ impl<T: Integer> Parser<T> {
             Ok((var, val))
         }
         else {
-            Err(ParserError::new("The format of the statement must be \"var = expression\""))
+            let val = self.eval_inner(stmt, ctx)?;
+            Ok(("".to_string(), val))
         }
     }
 

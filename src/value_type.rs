@@ -40,7 +40,6 @@ pub trait Integer :
     fn rotate_left(self, n: u32) -> Self;
 
     fn rotate_right(self, n: u32) -> Self;
-    // rotation_r rotation_l abs abs_diff
 }
 
 macro_rules! impl_int {

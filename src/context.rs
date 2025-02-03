@@ -36,6 +36,14 @@ impl<T: Integer> Context<T> {
         self.parser.eval_inner(src, &self.var_info)
     }
 
+    pub fn eval_stmt(&mut self, stmt: &str) -> Result<T, ParserError> {
+        let (var, val) = self.parser.parse_statement(stmt, &self.var_info)?;
+        if !var.is_empty() {
+            self.var_info.insert(var, val);
+        }
+        Ok(val)
+    }
+
     pub fn clear(&mut self) {
         self.var_info.clear();
     }
@@ -52,5 +60,9 @@ mod tests {
         assert_eq!(ctx.eval("x + 3").unwrap(), 4);
         ctx.assign_stmt("y = x + 5").unwrap();
         assert_eq!(ctx.eval("y + x * 2").unwrap(), 8);
+
+        assert_eq!(ctx.eval_stmt("y + x * 2").unwrap(), 8);
+        assert_eq!(ctx.eval_stmt("z = y + x * 2").unwrap(), 8);
+        assert_eq!(ctx.eval("z + y + x * 2").unwrap(), 16);
     }
 }
